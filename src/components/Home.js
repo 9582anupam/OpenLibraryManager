@@ -68,69 +68,74 @@ const Home = () => {
 
     return (
         <div className="px-5">
-            <h1 className="text-center text-4xl font-bold pt-5">Admin Dashboard</h1>
+            <h1 className="text-center text-4xl font-bold pt-5 text-blue-500">Admin Dashboard</h1>
+
             <div className="my-10">
                 {isLoading ? (
                     <ReactLoading type="bars" color="#9ca3af" className="mx-auto" />
                 ) : (
-                    <table className="border border-black w-full text-center">
-                        <thead>
-                            <tr className="bg-gray-200">
-                                <th className="border border-gray-400 px-4 py-2">S. No.</th>
-                                <th className="border border-gray-400 px-4 py-2">Title</th>
-                                <th className="border border-gray-400 px-4 py-2">Author Name</th>
-                                <th className="border border-gray-400 px-4 py-2">Ratings Average</th>
-                                <th className="border border-gray-400 px-4 py-2">First Publish Year</th>
-                                <th className="border border-gray-400 px-4 py-2">Subject</th>
-                                <th className="border border-gray-400 px-4 py-2">Birth Date</th>
-                                <th className="border border-gray-400 px-4 py-2">Top Work</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {records.map((item, index) => (
-                                <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
-                                    <td className="border border-gray-400 px-4 py-2">{index + 10 * currentPage - 9}</td>
-                                    <td className="border border-gray-400 px-4 py-2">{item.title || 'N/A'}</td>
-                                    <td className="border border-gray-400 px-4 py-2">{item.author_name?.[0] || 'N/A'}</td>
-                                    <td className="border border-gray-400 px-4 py-2">{item.ratings_average || 'N/A'}</td>
-                                    <td className="border border-gray-400 px-4 py-2">{item.first_publish_year || 'N/A'}</td>
-                                    <td className="border border-gray-400 px-4 py-2">{Array.isArray(item.subject) ? item.subject.slice(0, 3).join(', ') : 'N/A'}</td>
-                                    <td className="border border-gray-400 px-4 py-2">{item.birth_date}</td>
-                                    <td className="border border-gray-400 px-4 py-2">{item.top_work}</td>
+                    <div>
+                        <table className="border border-black w-full text-center ">
+                            <thead>
+                                <tr className="bg-gray-200">
+                                    <th className="border border-gray-400 px-4 py-2 font-bold">S. No.</th>
+                                    <th className="border border-gray-400 px-4 py-2 font-bold">Title</th>
+                                    <th className="border border-gray-400 px-4 py-2 font-bold">Author Name</th>
+                                    <th className="border border-gray-400 px-4 py-2 font-bold">Ratings Average</th>
+                                    <th className="border border-gray-400 px-4 py-2 font-bold">First Publish Year</th>
+                                    <th className="border border-gray-400 px-4 py-2 font-bold">Subject</th>
+                                    <th className="border border-gray-400 px-4 py-2 font-bold">Birth Date</th>
+                                    <th className="border border-gray-400 px-4 py-2 font-bold">Top Work</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                )}
-            </div>
-            <div>
-                <ul className="flex gap-3 justify-center pb-10">
-                    <li>
-                        <div onClick={prevPage} className="cursor-pointer px-3 py-1 border border-gray-300 rounded">Prev</div>
-                    </li>
-                    {numbers.map((n, i) => (
-                        <li key={i}>
-                            <div
-                                onClick={() => changeCurrPage(n)}
-                                className={`cursor-pointer px-3 py-1 border border-gray-300 rounded ${currentPage === n ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}
-                            >
-                                {n}
-                            </div>
-                        </li>
-                    ))}
-                    <li>
-                        <div onClick={nextPage} className="cursor-pointer px-3 py-1 border border-gray-300 rounded">Next</div>
-                    </li>
-                </ul>
-            </div>
+                            </thead>
+                            <tbody>
+                                {records.map((item, index) => (
+                                    <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                                        <td className="border border-gray-400 px-4 py-2">{index + 10 * currentPage - 9}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{item.title || 'N/A'}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{item.author_name?.[0] || 'N/A'}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{item.ratings_average || 'N/A'}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{item.first_publish_year || 'N/A'}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{Array.isArray(item.subject) ? item.subject.slice(0, 3).join(', ') : 'N/A'}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{item.birth_date}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{item.top_work}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
 
-            <div className="flex justify-center pb-10">
-                <label className="mr-2">Records per page:</label>
-                <select name="record" value={postsPerPage} onChange={handlePostsPerPageChange} className="border border-gray-300 rounded px-2 py-1">
-                    <option value="10">10</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
+                        <div>
+                            <ul className="flex gap-3 justify-center py-10">
+                                <li>
+                                    <div onClick={prevPage} className="cursor-pointer px-3 py-1 border border-gray-300 rounded">Prev</div>
+                                </li>
+                                {numbers.map((n, i) => (
+                                    <li key={i}>
+                                        <div
+                                            onClick={() => changeCurrPage(n)}
+                                            className={`cursor-pointer px-3 py-1 border border-gray-300 rounded ${currentPage === n ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}
+                                        >
+                                            {n}
+                                        </div>
+                                    </li>
+                                ))}
+                                <li>
+                                    <div onClick={nextPage} className="cursor-pointer px-3 py-1 border border-gray-300 rounded">Next</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="flex justify-center pb-10">
+                            <label className="mr-2">Records per page:</label>
+                            <select name="record" value={postsPerPage} onChange={handlePostsPerPageChange} className="border border-gray-300 rounded px-2 py-1">
+                                <option value="10">10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+
+                    </div>
+                )}
             </div>
         </div>
     );
