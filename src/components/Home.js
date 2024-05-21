@@ -18,7 +18,7 @@ const Home = () => {
 
     useEffect(() => {
         // Fetching the first API
-        axios.get('https://openlibrary.org/search.json?q=the+lord+of+the+rings&fields=author_key,ratings_average,author_name,title,first_publish_year,subject')
+        axios.get('https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject')
             .then(response => {
                 const books = response.data.docs;
                 const authorPromises = books.map(book => {
