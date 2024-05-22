@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import ReactLoading from "react-loading";
+import CreateCSV from "./CreateCSV";
 
 const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -128,7 +129,7 @@ const Home = () => {
                 ) : (
                     <div>
                         <div className="overflow-x-auto">
-                            <table className="border border-black w-full text-center">
+                            <table className="border border-black w-full text-center" id="table">
                                 <thead>
                                     <tr className="bg-gray-200">
                                         <th className="border border-gray-400 px-4 py-2 font-bold">
@@ -220,8 +221,8 @@ const Home = () => {
                             </table>
                         </div>
 
-                        <div className="flex flex-col items-center sm:flex-row sm:justify-between py-10">
-                            <ul className="flex gap-2 justify-center py-5 sm:py-0">
+                        <div className="flex items-center justify-around flex-col md:flex-row gap-5 pt-10">
+                            <ul className="flex gap-2 justify-center sm:py-0">
                                 <li>
                                     <div
                                         onClick={prevPage}
@@ -258,6 +259,8 @@ const Home = () => {
                                     </div>
                                 </li>
                             </ul>
+                            
+                            <CreateCSV/>
 
                             <div className="flex justify-center sm:justify-end pb-10 sm:pb-0">
                                 <label className="mr-2">
@@ -273,10 +276,12 @@ const Home = () => {
                                     <option value="100">100</option>
                                 </select>
                             </div>
+                            
                         </div>
                     </div>
                 )}
             </div>
+
         </div>
     );
 };
