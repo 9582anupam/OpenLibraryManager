@@ -10,7 +10,6 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const npage = Math.ceil(totalRecords / postsPerPage);
-    const numbers = [...Array(npage + 1).keys()].slice(1);
 
     const fetchData = useCallback(() => {
         setIsLoading(true);
@@ -51,9 +50,6 @@ const Home = () => {
         fetchData();
     }, [fetchData]);
 
-
-
-
     const prevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
@@ -75,13 +71,41 @@ const Home = () => {
         setCurrentPage(1); // Reset to first page when posts per page changes
     };
 
+    const getPaginationNumbers = () => {
+        const delta = 2;
+        const range = [];
+        let pages = [];
+        let l;
+
+        range.push(1);
+        for (let i = currentPage - delta; i <= currentPage + delta; i++) {
+            if (i >= 2 && i <= npage-1) {
+                range.push(i);
+            }
+        }
+        range.push(npage);
+        
+        // range.forEach(i => {
+        //     if (l) {
+        //         if (i - l === 2) {
+        //             pages.push(l + 1);
+        //         } else if (i - l !== 1) {
+        //             pages.push('...');
+        //         }
+        //     }
+        //     pages.push(i);
+        //     l = i;
+        // });
+        return range;
+    };
+
     return (
         <div className="px-5">
             <h1 className="text-center text-4xl font-bold pt-5 text-blue-500">Admin Dashboard</h1>
 
             <div className="my-10">
                 {isLoading ? (
-                    <ReactLoading type="bars" color="#9ca3af" className="mx-auto" />
+                    <ReactLoading type="bars" color="#3b82f6" className="mx-auto top-[40vh] h-[100vh] relative" />
                 ) : (
                     <div>
                         <table className="border border-black w-full text-center">
@@ -103,7 +127,7 @@ const Home = () => {
                                         <td className="border border-gray-400 px-4 py-2">{index + 1 + (currentPage - 1) * postsPerPage}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.title || 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.author_name?.[0] || 'N/A'}</td>
-                                        <td className="border border-gray-400 px-4 py-2">{item.ratings_average || 'N/A'}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{(item.ratings_average.toFixed(1)) || 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.first_publish_year || 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{Array.isArray(item.subject) ? item.subject.slice(0, 3).join(', ') : 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.birth_date}</td>
@@ -118,14 +142,21 @@ const Home = () => {
                                 <li>
                                     <div onClick={prevPage} className="cursor-pointer px-3 py-1 border border-gray-300 rounded">Prev</div>
                                 </li>
-                                {numbers.map((n, i) => (
+                                {
+                                    console.log(getPaginationNumbers())
+                                }
+                                {getPaginationNumbers().map((n, i) => (
                                     <li key={i}>
-                                        <div
-                                            onClick={() => changeCurrPage(n)}
-                                            className={`cursor-pointer px-3 py-1 border border-gray-300 rounded ${currentPage === n ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}
-                                        >
-                                            {n}
-                                        </div>
+                                        {typeof n === 'number' ? (
+                                            <div
+                                                onClick={() => changeCurrPage(n)}
+                                                className={`cursor-pointer px-3 py-1 border border-gray-300 rounded ${currentPage === n ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}
+                                            >
+                                                {n}
+                                            </div>
+                                        ) : (
+                                            <span className="px-3 py-1 text-red-500">{n}</span>
+                                        )}
                                     </li>
                                 ))}
                                 <li>
