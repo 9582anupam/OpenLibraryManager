@@ -68,15 +68,12 @@ const Home = () => {
 
     const handlePostsPerPageChange = (event) => {
         setPostsPerPage(Number(event.target.value));
-        setCurrentPage(1); // Reset to first page when posts per page changes
+        setCurrentPage(1);
     };
 
     const getPaginationNumbers = () => {
         const delta = 2;
         const range = [];
-        let pages = [];
-        let l;
-
         range.push(1);
         for (let i = currentPage - delta; i <= currentPage + delta; i++) {
             if (i >= 2 && i <= npage-1) {
@@ -85,17 +82,6 @@ const Home = () => {
         }
         range.push(npage);
         
-        // range.forEach(i => {
-        //     if (l) {
-        //         if (i - l === 2) {
-        //             pages.push(l + 1);
-        //         } else if (i - l !== 1) {
-        //             pages.push('...');
-        //         }
-        //     }
-        //     pages.push(i);
-        //     l = i;
-        // });
         return range;
     };
 
