@@ -113,6 +113,15 @@ const Home = () => {
         }
     };
 
+    const handleAuthorSearch = () => {
+        const authorName = document.getElementById("authorName").value;
+        console.log(authorName);
+        setApi1(
+            `https://openlibrary.org/search.json?q=${authorName}&fields=author_key,ratings_average,author_name,title,first_publish_year,subject`
+        );
+        setCurrentPage(1);
+    }
+
     return (
         <div className="px-4 sm:px-5">
             <h1 className="text-center text-2xl sm:text-4xl font-bold pt-5 text-blue-500">
@@ -138,8 +147,10 @@ const Home = () => {
                                         <th className="border border-gray-400 px-4 py-2 font-bold">
                                             Title
                                         </th>
-                                        <th className="border border-gray-400 px-4 py-2 font-bold">
-                                            Author Name
+                                        <th className="border border-gray-400 px-4 py-2 ">
+                                            <p className="font-bold">Author Name</p>
+                                            <input placeholder="Author Name" className="px-2 rounded-sm w-full" id="authorName"></input>
+                                            <button className="bg-gray-300 px-1 py-0.5 mt-1 rounded-md" onClick={handleAuthorSearch}>Search</button>
                                         </th>
                                         <th className="border border-gray-400 px-4 py-2 font-bold">
                                             Ratings Average
