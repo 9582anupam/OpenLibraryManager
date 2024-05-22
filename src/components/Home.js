@@ -113,7 +113,7 @@ const Home = () => {
                                         <td className="border border-gray-400 px-4 py-2">{index + 1 + (currentPage - 1) * postsPerPage}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.title || 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.author_name?.[0] || 'N/A'}</td>
-                                        <td className="border border-gray-400 px-4 py-2">{(item.ratings_average.toFixed(1)) || 'N/A'}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{ (item.ratings_average) ? (item.ratings_average.toFixed(1)) : 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.first_publish_year || 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{Array.isArray(item.subject) ? item.subject.slice(0, 3).join(', ') : 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.birth_date}</td>
