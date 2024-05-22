@@ -6,21 +6,28 @@ const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(10);
     const [data, setData] = useState([]);
+    const [totalRecords, setTotalRecords] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
-    // Calculate indices for slicing data for the current page
-    const lastIndex = currentPage * postsPerPage;
-    const firstIndex = lastIndex - postsPerPage;
-    const records = data.slice(firstIndex, lastIndex);
-
-    const npage = Math.ceil(data.length / postsPerPage);
+    const npage = Math.ceil(totalRecords / postsPerPage);
     const numbers = [...Array(npage + 1).keys()].slice(1);
+    console.log(numbers);
 
     useEffect(() => {
-        // Fetching the first API
-        axios.get('https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject')
+        fetchData();
+    }, [currentPage, postsPerPage]);
+
+    const fetchData = () => {
+        setIsLoading(true);
+
+        const limit = postsPerPage;
+        const offset = (currentPage - 1) * postsPerPage;
+
+        axios.get(`https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject&limit=${limit}&offset=${offset}`)
             .then(response => {
                 const books = response.data.docs;
+                setTotalRecords(response.data.numFound);
+
                 const authorPromises = books.map(book => {
                     const authorName = book.author_name?.[0];
                     return axios.get(`https://openlibrary.org/search/authors.json?q=${authorName}`)
@@ -43,28 +50,28 @@ const Home = () => {
                 console.log(`Error while fetching data: ${error}`);
                 setIsLoading(false);
             });
-    }, []);
+    };
 
-    function prevPage() {
+    const prevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
-    }
+    };
 
-    function nextPage() {
+    const nextPage = () => {
         if (currentPage < npage) {
             setCurrentPage(currentPage + 1);
         }
-    }
+    };
 
-    function changeCurrPage(n) {
+    const changeCurrPage = (n) => {
         setCurrentPage(n);
-    }
+    };
 
-    function handlePostsPerPageChange(event) {
+    const handlePostsPerPageChange = (event) => {
         setPostsPerPage(Number(event.target.value));
         setCurrentPage(1); // Reset to first page when posts per page changes
-    }
+    };
 
     return (
         <div className="px-5">
@@ -75,7 +82,7 @@ const Home = () => {
                     <ReactLoading type="bars" color="#9ca3af" className="mx-auto" />
                 ) : (
                     <div>
-                        <table className="border border-black w-full text-center ">
+                        <table className="border border-black w-full text-center">
                             <thead>
                                 <tr className="bg-gray-200">
                                     <th className="border border-gray-400 px-4 py-2 font-bold">S. No.</th>
@@ -89,9 +96,9 @@ const Home = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {records.map((item, index) => (
+                                {data.map((item, index) => (
                                     <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
-                                        <td className="border border-gray-400 px-4 py-2">{index + 10 * currentPage - 9}</td>
+                                        <td className="border border-gray-400 px-4 py-2">{index + 1 + (currentPage - 1) * postsPerPage}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.title || 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.author_name?.[0] || 'N/A'}</td>
                                         <td className="border border-gray-400 px-4 py-2">{item.ratings_average || 'N/A'}</td>
