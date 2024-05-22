@@ -8,6 +8,7 @@ const Home = () => {
     const [data, setData] = useState([]);
     const [totalRecords, setTotalRecords] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [api1, setApi1] = useState("https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject");
 
     const npage = Math.ceil(totalRecords / postsPerPage);
 
@@ -16,8 +17,8 @@ const Home = () => {
 
         const limit = postsPerPage;
         const offset = (currentPage - 1) * postsPerPage;
-
-        axios.get(`https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject&limit=${limit}&offset=${offset}`)
+        
+        axios.get(`${api1}&limit=${limit}&offset=${offset}`)
             .then(response => {
                 const books = response.data.docs;
                 setTotalRecords(response.data.numFound);
@@ -44,7 +45,7 @@ const Home = () => {
                 console.log(`Error while fetching data: ${error}`);
                 setIsLoading(false);
             });
-    }, [currentPage, postsPerPage]);
+    }, [currentPage, postsPerPage, api1]);
 
     useEffect(() => {
         fetchData();
@@ -85,6 +86,24 @@ const Home = () => {
         return range;
     };
 
+    const handleYearSort = (event) => {
+        console.log(event.target.value);
+        if (event.target.value === "default") {
+            setApi1("https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject");
+            setCurrentPage(1); // sending to first page on anytype of sorting rather than staying on the same page
+        }
+        else if (event.target.value === "new") {
+            setApi1("https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject&sort=new");
+            setCurrentPage(1);
+
+        }
+        else if (event.target.value === "old") {
+            setApi1("https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject&sort=old");
+            setCurrentPage(1);
+
+        }
+    }
+
     return (
         <div className="px-5">
             <h1 className="text-center text-4xl font-bold pt-5 text-blue-500">Admin Dashboard</h1>
@@ -101,7 +120,18 @@ const Home = () => {
                                     <th className="border border-gray-400 px-4 py-2 font-bold">Title</th>
                                     <th className="border border-gray-400 px-4 py-2 font-bold">Author Name</th>
                                     <th className="border border-gray-400 px-4 py-2 font-bold">Ratings Average</th>
-                                    <th className="border border-gray-400 px-4 py-2 font-bold">First Publish Year</th>
+                                    <th className="border border-gray-400 px-4 py-2">
+                                        <p className="font-bold">
+                                            First Publish Year
+                                        </p>
+                                        {/* <label className="pr-1">sort</label> */}
+                                        <select onChange={handleYearSort}>
+                                            <option>Sort</option>
+                                            <option>default</option>
+                                            <option>new</option>
+                                            <option>old</option>
+                                        </select>
+                                    </th>
                                     <th className="border border-gray-400 px-4 py-2 font-bold">Subject</th>
                                     <th className="border border-gray-400 px-4 py-2 font-bold">Birth Date</th>
                                     <th className="border border-gray-400 px-4 py-2 font-bold">Top Work</th>
