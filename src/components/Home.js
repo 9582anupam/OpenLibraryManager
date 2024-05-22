@@ -110,7 +110,7 @@ const Home = () => {
 
             <div className="my-10">
                 {isLoading ? (
-                    <ReactLoading type="bars" color="#3b82f6" className="mx-auto top-[40vh] h-[100vh] relative" />
+                    <ReactLoading type="bars" color="#3b82f6" className="mx-auto top-[30vh]  relative" />
                 ) : (
                     <div>
                         <table className="border border-black w-full text-center">
