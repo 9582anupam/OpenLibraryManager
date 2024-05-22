@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import ReactLoading from "react-loading";
 
@@ -11,13 +11,8 @@ const Home = () => {
 
     const npage = Math.ceil(totalRecords / postsPerPage);
     const numbers = [...Array(npage + 1).keys()].slice(1);
-    console.log(numbers);
 
-    useEffect(() => {
-        fetchData();
-    }, [currentPage, postsPerPage]);
-
-    const fetchData = () => {
+    const fetchData = useCallback(() => {
         setIsLoading(true);
 
         const limit = postsPerPage;
@@ -50,7 +45,14 @@ const Home = () => {
                 console.log(`Error while fetching data: ${error}`);
                 setIsLoading(false);
             });
-    };
+    }, [currentPage, postsPerPage]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+
+
 
     const prevPage = () => {
         if (currentPage > 1) {
