@@ -10,9 +10,9 @@ const Home = () => {
     const [totalRecords, setTotalRecords] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [api1, setApi1] = useState(
-        "https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject"
+        "https://openlibrary.org/search.json?q=random&fields=author_key,ratings_average,author_name,title,first_publish_year,subject"
     );
-    const [authorName, setAuthorName] = useState("comedy");
+    const [authorName, setAuthorName] = useState("random");
     const [yearSort, setYearSort] = useState("default");
     const [selectedSortOption, setSelectedSortOption] = useState("default");
 
