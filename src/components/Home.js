@@ -2,25 +2,35 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import ReactLoading from "react-loading";
 import CreateCSV from "./CreateCSV";
+import DashboardText from "./DashboardText";
+import BooksTable from "./BookTable";
+import PaginationComponent from "./PaginationComponent";
+import RecordsPerPage from "./RecordsPerPage";
+
+
 
 const Home = () => {
+
+    // states/vars
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(10);
     const [data, setData] = useState([]);
     const [totalRecords, setTotalRecords] = useState(0);
+    const npage = Math.ceil(totalRecords / postsPerPage);
     const [isLoading, setIsLoading] = useState(true);
     const [api1, setApi1] = useState(
         "https://openlibrary.org/search.json?q=random&fields=author_key,ratings_average,author_name,title,first_publish_year,subject"
     );
-    const [authorName, setAuthorName] = useState("random");
+    const [authorName, setAuthorName] = useState("random"); // random so that results are not specific to a subject P.S. random is not a special query
     const [yearSort, setYearSort] = useState("default");
     const [selectedSortOption, setSelectedSortOption] = useState("default");
 
-    const npage = Math.ceil(totalRecords / postsPerPage);
 
+    // fetching data from api
     const fetchData = useCallback(() => {
-        setIsLoading(true);
+        setIsLoading(true); // to show loading animation while data is fetching
 
+        // calculating amount of data to be fetched according to post per page
         const limit = postsPerPage;
         const offset = (currentPage - 1) * postsPerPage;
 
@@ -61,27 +71,32 @@ const Home = () => {
         fetchData();
     }, [fetchData]);
 
+    // handle previous page button
     const prevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
     };
 
+    // handle next page button
     const nextPage = () => {
         if (currentPage < npage) {
             setCurrentPage(currentPage + 1);
         }
     };
 
+    // handle setting current page 
     const changeCurrPage = (n) => {
         setCurrentPage(n);
     };
 
+    // handle post per page button(10/50/100)
     const handlePostsPerPageChange = (event) => {
         setPostsPerPage(Number(event.target.value));
         setCurrentPage(1);
     };
 
+    // return pagination numbers to display. delta show how many numbers to show after current page and before current page number
     const getPaginationNumbers = () => {
         const delta = 2;
         const range = [];
@@ -96,8 +111,8 @@ const Home = () => {
         return range;
     };
 
+    // handle first publish year sorting by calling api again with sort parameters 
     const handleYearSort = (event) => {
-        console.log(event.target.value);
         const year = event.target.value;
         setSelectedSortOption(year);
         setYearSort(year);
@@ -114,11 +129,10 @@ const Home = () => {
         setCurrentPage(1); // sending to first page on anytype of sorting rather than staying on the same page
     };
 
+    // handle author name search button by calling the api again with query as author name
     const handleAuthorSearch = () => {
         const name = document.getElementById("authorName").value;
         setAuthorName(name);
-        console.log(authorName);
-        console.log(name);
         if (yearSort === "default") {
             setApi1(
                 `https://openlibrary.org/search.json?q=${name}&fields=author_key,ratings_average,author_name,title,first_publish_year,subject`
@@ -131,183 +145,25 @@ const Home = () => {
         setCurrentPage(1);
     };
 
+
+    // UI
     return (
         <div className="px-4 sm:px-5">
-            <h1 className="text-center text-2xl sm:text-4xl font-bold pt-5 text-blue-500">
-                Admin Dashboard
-            </h1>
+            <DashboardText/> 
 
             <div className="my-10">
                 {isLoading ? (
-                    <ReactLoading
-                        type="bars"
-                        color="#3b82f6"
-                        className="mx-auto top-[30vh] relative"
-                    />
+                    <ReactLoading type="bars" color="#3b82f6" className="mx-auto top-[30vh] relative"/>
                 ) : (
                     <div>
-                        <div className="overflow-x-auto">
-                            <table
-                                className="border border-black w-full text-center"
-                                id="table">
-                                <thead>
-                                    <tr className="bg-gray-200">
-                                        <th className="border border-gray-400 px-4 py-2 font-bold">
-                                            S. No.
-                                        </th>
-                                        <th className="border border-gray-400 px-4 py-2 font-bold">
-                                            Title
-                                        </th>
-                                        <th className="border border-gray-400 px-4 py-2 ">
-                                            <p className="font-bold">
-                                                Author Name
-                                            </p>
-                                            <input
-                                                placeholder="Author Name"
-                                                className="px-2 rounded-sm w-full"
-                                                id="authorName"></input>
-                                            <button
-                                                className="bg-gray-300 px-1 py-0.5 mt-1 rounded-md"
-                                                onClick={handleAuthorSearch}>
-                                                Search
-                                            </button>
-                                        </th>
-                                        <th className="border border-gray-400 px-4 py-2 font-bold">
-                                            Ratings Average
-                                        </th>
-                                        <th className="border border-gray-400 px-4 py-2">
-                                            <p className="font-bold">
-                                                First Publish Year
-                                            </p>
-                                            <select
-                                                id="yearSort"
-                                                onChange={handleYearSort}
-                                                value={selectedSortOption} // Add this line
-                                                className="mt-2 block w-full">
-                                                <option value="default">
-                                                    default
-                                                </option>
-                                                <option value="new">new</option>
-                                                <option value="old">old</option>
-                                            </select>
-                                        </th>
-                                        <th className="border border-gray-400 px-4 py-2 font-bold">
-                                            Subject
-                                        </th>
-                                        <th className="border border-gray-400 px-4 py-2 font-bold">
-                                            Birth Date
-                                        </th>
-                                        <th className="border border-gray-400 px-4 py-2 font-bold">
-                                            Top Work
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {data.map((item, index) => (
-                                        <tr
-                                            key={index}
-                                            className={
-                                                index % 2 === 0
-                                                    ? "bg-gray-100"
-                                                    : ""
-                                            }>
-                                            <td className="border border-gray-400 px-4 py-2">
-                                                {index +
-                                                    1 +
-                                                    (currentPage - 1) *
-                                                        postsPerPage}
-                                            </td>
-                                            <td className="border border-gray-400 px-4 py-2">
-                                                {item.title || "N/A"}
-                                            </td>
-                                            <td className="border border-gray-400 px-4 py-2">
-                                                {item.author_name?.[0] || "N/A"}
-                                            </td>
-                                            <td className="border border-gray-400 px-4 py-2">
-                                                {item.ratings_average
-                                                    ? item.ratings_average.toFixed(
-                                                          1
-                                                      )
-                                                    : "N/A"}
-                                            </td>
-                                            <td className="border border-gray-400 px-4 py-2">
-                                                {item.first_publish_year ||
-                                                    "N/A"}
-                                            </td>
-                                            <td className="border border-gray-400 px-4 py-2">
-                                                {Array.isArray(item.subject)
-                                                    ? item.subject
-                                                          .slice(0, 3)
-                                                          .join(", ")
-                                                    : "N/A"}
-                                            </td>
-                                            <td className="border border-gray-400 px-4 py-2">
-                                                {item.birth_date}
-                                            </td>
-                                            <td className="border border-gray-400 px-4 py-2">
-                                                {item.top_work}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                        <BooksTable {...{handleAuthorSearch, handleYearSort, selectedSortOption, data, currentPage, postsPerPage}}/>
 
                         <div className="flex items-center justify-around flex-col md:flex-row gap-5 pt-10">
-                            <ul className="flex gap-2 justify-center sm:py-0">
-                                <li>
-                                    <div
-                                        onClick={prevPage}
-                                        className="cursor-pointer px-3 py-1 border border-gray-300 rounded">
-                                        Prev
-                                    </div>
-                                </li>
-                                {getPaginationNumbers().map((n, i) => (
-                                    <li key={i}>
-                                        {typeof n === "number" ? (
-                                            <div
-                                                onClick={() =>
-                                                    changeCurrPage(n)
-                                                }
-                                                className={`cursor-pointer px-3 py-1 border border-gray-300 rounded ${
-                                                    currentPage === n
-                                                        ? "bg-blue-500 text-white"
-                                                        : "bg-white text-black"
-                                                }`}>
-                                                {n}
-                                            </div>
-                                        ) : (
-                                            <span className="px-3 py-1 text-red-500">
-                                                {n}
-                                            </span>
-                                        )}
-                                    </li>
-                                ))}
-                                <li>
-                                    <div
-                                        onClick={nextPage}
-                                        className="cursor-pointer px-3 py-1 border border-gray-300 rounded">
-                                        Next
-                                    </div>
-                                </li>
-                            </ul>
+                            <PaginationComponent {...{prevPage, nextPage, changeCurrPage, getPaginationNumbers, currentPage}}/>
 
                             <CreateCSV />
 
-                            <div className="flex justify-center sm:justify-end pb-10 sm:pb-0">
-                                <label className="mr-2">
-                                    Records per page:
-                                </label>
-                                <select
-                                    name="record"
-                                    value={postsPerPage}
-                                    onChange={handlePostsPerPageChange}
-                                    className="border border-gray-300 rounded px-2 py-1">
-                                    <option value="10">10</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div>
+                            <RecordsPerPage {...{postsPerPage, handlePostsPerPageChange}}/>
                         </div>
                     </div>
                 )}
