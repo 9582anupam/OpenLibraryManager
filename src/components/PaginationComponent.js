@@ -1,6 +1,6 @@
 const PaginationComponent = ({prevPage, nextPage, changeCurrPage, getPaginationNumbers, currentPage}) => {
     return (
-        <ul className="flex gap-2 justify-center sm:py-0">
+        <ul className="flex gap-2 justify-center sm:py-0 text-sm sm:text-lg">
             <li>
                 <div
                     onClick={prevPage}

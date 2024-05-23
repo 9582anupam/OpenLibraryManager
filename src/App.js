@@ -11,7 +11,7 @@ function App() {
 
     return (
         <ErrorBoundary fallback={<div>Something went wrong</div>}>
-            <div className="App">
+            <div className="App w-full">
                 <Home/>
             </div>
         </ErrorBoundary>

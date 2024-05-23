@@ -98,7 +98,7 @@ const Home = () => {
 
     // return pagination numbers to display. delta show how many numbers to show after current page and before current page number
     const getPaginationNumbers = () => {
-        const delta = 2;
+        const delta = 1;
         const range = [];
         range.push(1);
         for (let i = currentPage - delta; i <= currentPage + delta; i++) {
