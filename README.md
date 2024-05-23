@@ -1,70 +1,141 @@
-# Getting Started with Create React App
+# Open Library Manager
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is an admin dashboard to list book records in a tabular format. The data is populated from the Open Library API. The dashboard includes pagination, sorting, search, and the ability to download current results in CSV format.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+1. **Data Fetching from API**
+   - Utilizes the [Open Library API](https://openlibrary.org/developers/api) to fetch book records.
 
-### `npm start`
+2. **Table Columns**
+   - `title`
+   - `author name`
+   - `ratings average`
+   - `first publish year`
+   - `subject`
+   - `author birth date`
+   - `author top work`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+3. **Pagination**
+   - Default: 10 books per page
+   - Options to change to 50 or 100 books per page
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+4. **Sorting**
+   - Ascending and descending sort on publish year
 
-### `npm test`
+5. **Search by Author**
+   - Search books by author's name
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+6. **CSV Download**
+   - Download the current table results in CSV format
 
-### `npm run build`
+7. **Error Handling**
+   - Utilizes `react-error-boundary` for error handling
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+8. **Loading Animation**
+   - Utilizes `react-loading` for loading animations
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Technologies Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- ReactJS
+- Tailwind CSS
+- Axios
+- react-loading
+- react-error-boundary
 
-### `npm run eject`
+## Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Prerequisites
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Ensure you have the following installed on your local machine:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Node.js
+- npm (Node Package Manager)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Installation
 
-## Learn More
+1. Clone the repository
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    `git clone https://github.com/9582anupam/OpenLibraryManager`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. Navigate to the project directory
 
-### Code Splitting
+    `cd OpenLibraryManager`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. Install the dependencies
 
-### Analyzing the Bundle Size
+    Axios:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    `npm install axios`
+    or
+    `yarn add axios`
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    React Error Boundary:
 
-### Advanced Configuration
+    `npm install react-error-boundary`
+    or
+    `yarn add react-error-boundary`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+    React Loading:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+    `npm install react-loading`
+    or
+    `yarn add react-loading`
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Running the Application
+
+To start the application, run:
+
+`npm start`
+
+This will run the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+## Hosting
+
+The application can be hosted online using platforms like Vercel, Netlify, or GitHub Pages.
+
+## Usage
+
+- The dashboard displays a table of books with the specified columns.
+- Use the pagination controls to navigate through pages.
+- Use the sorting controls on each column header to sort the data.
+- Use the search bar to find books by author name.
+- Click the "Download CSV" button to download the current table data in CSV format.
+
+## Folder Structure
+
+- `src`
+  - `components`
+    - `BookTable.js`: Component to display book records in a table
+    - `CreateCSV.js`: Component to handle CSV downloads
+    - `DashboardText.js`: Component for dashboard header text
+    - `PaginationComponent.js`: Component for pagination controls
+    - `RecordsPerPage.js`: Component to change the number of records per page
+    - `Home.js`: Component contain all other components and main functionalities
+    - `Loading.js`: Component to how loading animation
+  - `App.js`: Main application component
+  - `App.css`: Empty
+  - `index.js`: Entry point of the application
+  - `index.css`: Global styles using Tailwind CSS
+- `public`
+    - `index.html`: main HTML file
+    - `fav.svg`: favicon image
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+Name - [Anupam](mailto:9582anupamk@gmail.com)
+
+Repository Link: [https://github.com/9582anupam/OpenLibraryManager](https://github.com/9582anupam/OpenLibraryManager)
+
+Live Link: https://open-library-manager.vercel.app/
