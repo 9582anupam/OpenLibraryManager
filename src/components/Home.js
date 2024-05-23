@@ -12,6 +12,9 @@ const Home = () => {
     const [api1, setApi1] = useState(
         "https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject"
     );
+    const [authorName, setAuthorName] = useState("comedy");
+    const [yearSort, setYearSort] = useState("default");
+    const [selectedSortOption, setSelectedSortOption] = useState("default");
 
     const npage = Math.ceil(totalRecords / postsPerPage);
 
@@ -95,32 +98,38 @@ const Home = () => {
 
     const handleYearSort = (event) => {
         console.log(event.target.value);
-        if (event.target.value === "default") {
+        const year = event.target.value;
+        setSelectedSortOption(year);
+        setYearSort(year);
+        console.log(authorName);
+        if (year === "default" && year !== "Sort") {
             setApi1(
-                "https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject"
+                `https://openlibrary.org/search.json?q=${authorName}&fields=author_key,ratings_average,author_name,title,first_publish_year,subject`
             );
-            setCurrentPage(1); // sending to first page on anytype of sorting rather than staying on the same page
-        } else if (event.target.value === "new") {
+        } else if (year !== "Sort") {
             setApi1(
-                "https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject&sort=new"
+                `https://openlibrary.org/search.json?q=${authorName}&fields=author_key,ratings_average,author_name,title,first_publish_year,subject&sort=${year}`
             );
-            setCurrentPage(1);
-        } else if (event.target.value === "old") {
-            setApi1(
-                "https://openlibrary.org/search.json?q=comedy&fields=author_key,ratings_average,author_name,title,first_publish_year,subject&sort=old"
-            );
-            setCurrentPage(1);
         }
+        setCurrentPage(1); // sending to first page on anytype of sorting rather than staying on the same page
     };
 
     const handleAuthorSearch = () => {
-        const authorName = document.getElementById("authorName").value;
+        const name = document.getElementById("authorName").value;
+        setAuthorName(name);
         console.log(authorName);
-        setApi1(
-            `https://openlibrary.org/search.json?q=${authorName}&fields=author_key,ratings_average,author_name,title,first_publish_year,subject`
-        );
+        console.log(name);
+        if (yearSort === "default") {
+            setApi1(
+                `https://openlibrary.org/search.json?q=${name}&fields=author_key,ratings_average,author_name,title,first_publish_year,subject`
+            );
+        } else {
+            setApi1(
+                `https://openlibrary.org/search.json?q=${name}&fields=author_key,ratings_average,author_name,title,first_publish_year,subject&sort=${yearSort}`
+            );
+        }
         setCurrentPage(1);
-    }
+    };
 
     return (
         <div className="px-4 sm:px-5">
@@ -138,7 +147,9 @@ const Home = () => {
                 ) : (
                     <div>
                         <div className="overflow-x-auto">
-                            <table className="border border-black w-full text-center" id="table">
+                            <table
+                                className="border border-black w-full text-center"
+                                id="table">
                                 <thead>
                                     <tr className="bg-gray-200">
                                         <th className="border border-gray-400 px-4 py-2 font-bold">
@@ -148,9 +159,18 @@ const Home = () => {
                                             Title
                                         </th>
                                         <th className="border border-gray-400 px-4 py-2 ">
-                                            <p className="font-bold">Author Name</p>
-                                            <input placeholder="Author Name" className="px-2 rounded-sm w-full" id="authorName"></input>
-                                            <button className="bg-gray-300 px-1 py-0.5 mt-1 rounded-md" onClick={handleAuthorSearch}>Search</button>
+                                            <p className="font-bold">
+                                                Author Name
+                                            </p>
+                                            <input
+                                                placeholder="Author Name"
+                                                className="px-2 rounded-sm w-full"
+                                                id="authorName"></input>
+                                            <button
+                                                className="bg-gray-300 px-1 py-0.5 mt-1 rounded-md"
+                                                onClick={handleAuthorSearch}>
+                                                Search
+                                            </button>
                                         </th>
                                         <th className="border border-gray-400 px-4 py-2 font-bold">
                                             Ratings Average
@@ -160,9 +180,10 @@ const Home = () => {
                                                 First Publish Year
                                             </p>
                                             <select
+                                                id="yearSort"
                                                 onChange={handleYearSort}
+                                                value={selectedSortOption} // Add this line
                                                 className="mt-2 block w-full">
-                                                <option>Sort</option>
                                                 <option value="default">
                                                     default
                                                 </option>
@@ -270,8 +291,8 @@ const Home = () => {
                                     </div>
                                 </li>
                             </ul>
-                            
-                            <CreateCSV/>
+
+                            <CreateCSV />
 
                             <div className="flex justify-center sm:justify-end pb-10 sm:pb-0">
                                 <label className="mr-2">
@@ -287,12 +308,10 @@ const Home = () => {
                                     <option value="100">100</option>
                                 </select>
                             </div>
-                            
                         </div>
                     </div>
                 )}
             </div>
-
         </div>
     );
 };
