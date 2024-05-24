@@ -148,12 +148,12 @@ const Home = () => {
 
     // UI
     return (
-        <div className="px-4 sm:px-5">
+        <div className="px-4 sm:px-5 bg-gray-900 min-h-screen">
             <DashboardText/> 
 
-            <div className="my-10">
+            <div className="py-10">
                 {isLoading ? (
-                    <ReactLoading type="bars" color="#3b82f6" className="mx-auto top-[30vh] relative"/>
+                    <ReactLoading type="bars" color="#9ca3af" className="mx-auto top-[30vh] relative"/>
                 ) : (
                     <div>
                         <BooksTable {...{handleAuthorSearch, handleYearSort, selectedSortOption, data, currentPage, postsPerPage}}/>

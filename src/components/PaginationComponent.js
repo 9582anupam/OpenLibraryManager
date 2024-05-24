@@ -4,8 +4,8 @@ const PaginationComponent = ({prevPage, nextPage, changeCurrPage, getPaginationN
             <li>
                 <div
                     onClick={prevPage}
-                    className="cursor-pointer px-3 py-1 border border-gray-300 rounded">
-                    Prev
+                    className="cursor-pointer px-3 py-1 rounded text-gray-400">
+                    {'<'}Prev
                 </div>
             </li>
             {getPaginationNumbers().map((n, i) => (
@@ -13,10 +13,10 @@ const PaginationComponent = ({prevPage, nextPage, changeCurrPage, getPaginationN
                     {typeof n === "number" ? (
                         <div
                             onClick={() => changeCurrPage(n)}
-                            className={`cursor-pointer px-3 py-1 border border-gray-300 rounded ${
+                            className={`cursor-pointer px-3 py-1 border border-gray-400  rounded ${
                                 currentPage === n
                                     ? "bg-blue-500 text-white"
-                                    : "bg-white text-black"
+                                    : "bg-gray-900 text-gray-400"
                             }`}>
                             {n}
                         </div>
@@ -28,8 +28,8 @@ const PaginationComponent = ({prevPage, nextPage, changeCurrPage, getPaginationN
             <li>
                 <div
                     onClick={nextPage}
-                    className="cursor-pointer px-3 py-1 border border-gray-300 rounded">
-                    Next
+                    className="cursor-pointer px-3 py-1 text-gray-400 rounded">
+                    Next{'>'}
                 </div>
             </li>
         </ul>
