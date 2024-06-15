@@ -55,32 +55,32 @@ const BooksTable = ({handleAuthorSearch, handleYearSort, selectedSortOption, dat
                         <tr
                             key={index}
                             className={index % 2 === 0 ? "bg-black bg-opacity-20" : ""}>
-                            <td className="border border-none px-4 py-2">
+                            <td className="border border-none px-4 py-2" contentEditable='true'>
                                 {index + 1 + (currentPage - 1) * postsPerPage}
                             </td>
-                            <td className="border border-none px-4 py-2">
+                            <td className="border border-none px-4 py-2" contentEditable='true'>
                                 {item.title || "N/A"}
                             </td>
-                            <td className="border border-none px-4 py-2">
+                            <td className="border border-none px-4 py-2" contentEditable='true'>
                                 {item.author_name?.[0] || "N/A"}
                             </td>
-                            <td className="border border-none px-4 py-2">
+                            <td className="border border-none px-4 py-2" contentEditable='true'>
                                 {item.ratings_average
                                     ? item.ratings_average.toFixed(1)
                                     : "N/A"}
                             </td>
-                            <td className="border border-none px-4 py-2">
+                            <td className="border border-none px-4 py-2" contentEditable='true'>
                                 {item.first_publish_year || "N/A"}
                             </td>
-                            <td className="border border-none px-4 py-2">
+                            <td className="border border-none px-4 py-2" contentEditable='true'>
                                 {Array.isArray(item.subject)
                                     ? item.subject.slice(0, 3).join(", ")
                                     : "N/A"}
                             </td>
-                            <td className="border border-none px-4 py-2">
+                            <td className="border border-none px-4 py-2" contentEditable='true'>
                                 {item.birth_date}
                             </td>
-                            <td className="border border-none px-4 py-2">
+                            <td className="border border-none px-4 py-2" contentEditable='true'>
                                 {item.top_work}
                             </td>
                         </tr>
